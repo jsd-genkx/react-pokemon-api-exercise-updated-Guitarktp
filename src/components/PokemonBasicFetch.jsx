@@ -7,13 +7,34 @@ const PokemonBasicFetch = () => {
 
   useEffect(() => {
     const fetchPokemon = async () => {
-      try {
-        // fetch data from api
+      try {const response = await fetch(
+         "https://pokeapi.co/api/v2/pokemon?limit=10"
+      )
+
+      if (!response.ok) {
+        throw new Error('Response was not ok')
+      }
+
+      //throw new ต้องมีเพื่อ ...
+      const data = await response.json();
+
+      setPokemonData(data.results)
+      }catch (error) {
+        setError(error.message);
+      }finally {
+        setLoading(false)
+      }
+
+
+      
+
+
 
 
         // handle data
 
     // invoke function
+    }
 
   }, []);
 

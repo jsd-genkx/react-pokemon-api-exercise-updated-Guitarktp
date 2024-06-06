@@ -1,6 +1,9 @@
 // import useEffect and useState
 import { useEffect, useState } from "react";
 
+
+
+
 const typeColors = {
   fire: "bg-red-500",
   water: "bg-blue-500",
@@ -25,18 +28,36 @@ const typeColors = {
 const PokemonFetch = () => {
   const [pokemonList, setPokemonList] = useState([]);
 
+// Fetch initial list of Pokémon
   useEffect(() => {
     const fetchAllPokemon = async () => {
       try {
-        // Fetch initial list of Pokémon
+        const response = await fetch(
+        "https://pokeapi.co/api/v2/pokemon?limit=20"
+      );
+
+         const data = await response.json();
+         console.log(response)
         // Sequentially fetch details for each Pokémon
+         const pokemonData =[];
+         console.log(data.results);
+         for (const pokemonAtt of data.results) {
+            const res = await fetch(pokemonAtt.url)
+            const pokemonDetails = await res.json();
+            pokemonData.push(pokemonDetails);
+         };
+
         // Update the state with the detailed Pokémon data
+        setPokemonList(pokemonData)
       } catch (error) {
         console.error("Failed to fetch Pokémon:", error);
-      }
+      } 
     };
     // invoke function
+    fetchAllPokemon()
+    
   }, []);
+  //ใส่ เป็น array ว่างเพราะเป็นการ run ครั้งเดียว 
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
